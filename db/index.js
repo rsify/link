@@ -1,8 +1,9 @@
+const EventEmitter = require('events')
+const r = require('rethinkdb')
 const config = require('../config')
 
-const r = require('rethinkdb')
+const events = new EventEmitter()
 
-let conn
 r.connect({ host: config.r.host, port: config.r.port }).then((c) => {
 	conn = c
 	return r.dbList().contains(config.r.db).run(conn).then((res) => {
@@ -17,7 +18,9 @@ r.connect({ host: config.r.host, port: config.r.port }).then((c) => {
 		if (!res) {
 			console.log('table links doesn\'t exist, creating...')
 
-			return r.db(config.r.db).tableCreate('links').run(conn)
+			return r.db(config.r.db).tableCreate('links', {
+				primaryKey: 'l'
+			}).run(conn)
 		}
 	})
 }).catch((err) => {
@@ -25,6 +28,9 @@ r.connect({ host: config.r.host, port: config.r.port }).then((c) => {
 }).done(() => {
 	conn.use(config.r.db)
 	module.exports.conn = conn
+
+	events.emit('ready')
 })
 
 module.exports = r
+module.exports.events = events
