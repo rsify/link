@@ -26,3 +26,5 @@ r.connect({ host: config.r.host, port: config.r.port }).then((c) => {
 	conn.use(config.r.db)
 	module.exports.conn = conn
 })
+
+module.exports = r
