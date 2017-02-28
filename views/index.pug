@@ -1,7 +1,37 @@
+doctype html
+
 html
 	head
 		title link
+		link(rel='stylesheet' href='reset.css')
 		link(rel='stylesheet' href='link.css')
+		link(rel='stylesheet'
+			href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+		script(src='https://unpkg.com/vue@2.2.0/dist/vue.js')
 	body
-		h1 yo
+		.container
+			.title link
+			.subtitle shortener
+
+			#app
+
+		script(type='text/x-template')#app-template
+			transition(name='swap-transition')
+				component(v-bind:is='currentView')
+
+		script(type='text/x-template')#start-template
+			form.input-c.comp-c#form-input
+				input.paste-input(type='text' placeholder='paste here...')
+				button.paste-submit
+					i.fa.fa-arrow-right
+
+		script(type='text/x-template')#loading-template
+			.loading-c.comp-c
+				i.fa.fa-circle-o-notch
+
+		script(type='text/x-template')#finish-template
+			.finish-c.comp-c
+				a(href='#').output https://link.nikerino.com/aj589g
+				i.fa.fa-clipboard.output-copy
+
 		script(src='link.js')

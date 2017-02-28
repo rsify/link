@@ -1,3 +1,112 @@
+@import url('https://fonts.googleapis.com/css?family=Farsan');
+
+* {
+	box-sizing: border-box;
+}
+
 body {
 	background-color: #F5F5F5;
+	font-family: farsan;
+}
+
+.container {
+	margin: auto;
+	margin-top: 5%;
+	max-width: 300px;
+	position: relative;
+	text-align: center;
+}
+
+.title {
+	font-size: 10em;
+	margin-top: 20px;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+	font-size: 4em;
+	margin-top: -0.5em;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.paste-input {
+	background: none;
+	border: none;
+	color: black;
+	cursor: pointer;
+	font-family: farsan;
+	font-size: 1.5em;
+	margin-top: 20px;
+	outline: none;
+	text-align: center;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
+}
+
+.paste-input:hover, .paste-input:focus {
+	transform: translateY(-2px);
+}
+
+.paste-submit {
+	background: lightgray;
+	border-radius: 5px;
+	border: none;
+	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	display: block;
+	font-size: 1.5em;
+	margin: auto;
+	margin-top: 20px;
+	outline: none;
+	padding: 5px 15px 5px 15px;
+	text-align: center;
+	transition: 0.2s;
+}
+
+.paste-submit:hover {
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+	transform: translateY(2px);
+}
+
+.comp-c {
+	width: 100%;
+}
+
+.loading-c {
+	margin-top: 30px;
+}
+
+.loading-c > i {
+	animation: fa-spin 0.8s infinite linear;
+}
+
+.finish-c {
+	margin-top: 30px;
+}
+
+a.output {
+	color: gray;
+	display: inline-block;
+	font-size: 1.3em;
+	margin-right: 10px;
+}
+
+.output-copy {
+	color: gray;
+	cursor: pointer;
+}
+
+.swap-transition-enter-active, .swap-transition-leave-active  {
+	position: absolute;
+	transition: 0.5s;
+}
+
+.swap-transition-enter {
+	opacity: 0;
+	transform: translateY(50px);
+}
+
+.swap-transition-leave-to {
+	opacity: 0;
+	transform: translateY(-50px);
 }
