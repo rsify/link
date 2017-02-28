@@ -1,4 +1,5 @@
 const Promise = require('promise')
+const crypto = require('crypto')
 const db = require('../db')
 
 module.exports = class Link {
@@ -58,7 +59,7 @@ module.exports = class Link {
 			db.table('links').get(this.l)(prop).run(db.conn).then((res) => {
 				resolve(res)
 			}).catch((err) => {
-				reject(res)
+				reject(err)
 			})
 		})
 	}
@@ -70,6 +71,30 @@ module.exports = class Link {
 			}).catch((err) => {
 				reject(err)
 			})
+		})
+	}
+
+	static genId () {
+		const LEN = 6
+
+		return new Promise((resolve, reject) => {
+			const g = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+				'abcdefghijklmnopqrstuvwxyz0123456789'
+
+			const f = () => {
+				const l = Array.apply(null, Array(LEN)).map(() => {
+					return g.charAt(Math.floor(Math.random() * g.length))
+				}).join('')
+
+				db.table('links').get(l).run(db.conn).then((res) => {
+					if (res === null) resolve(l)
+					else f()
+				}).catch((err) => {
+					reject(err)
+				})
+			}
+
+			f()
 		})
 	}
 }
