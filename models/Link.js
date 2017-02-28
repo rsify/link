@@ -22,17 +22,9 @@ module.exports = class Link {
 			click[d] = click[d] || defaults[d]
 		}
 
-		console.log(click)
-
-		return new Promise((resolve, reject) => {
-			db.table('links').get(this.l).update({
+		return db.table('links').get(this.l).update({
 				clicks: db.row('clicks').append(click)
-			}).run(db.conn).then((res) => {
-				resolve(res)
-			}).catch((err) => {
-				reject(err)
-			})
-		})
+			}).run(db.conn)
 	}
 
 	create (url) {
@@ -42,36 +34,20 @@ module.exports = class Link {
 			clicks: []
 		}
 
-		return new Promise((resolve, reject) => {
-			db.table('links').insert(data).run(db.conn).then((res) => {
-				if (res.errors > 0)
-					reject(res.first_error)
-				else
-					resolve()
-			}).catch((err) => {
-				reject(err)
-			})
+		return db.table('links').insert(data).run(db.conn).then((res) => {
+			if (res.errors > 0)
+				throw res.first_error
+
+			return res
 		})
 	}
 
 	get (prop) {
-		return new Promise((resolve, reject) => {
-			db.table('links').get(this.l)(prop).run(db.conn).then((res) => {
-				resolve(res)
-			}).catch((err) => {
-				reject(err)
-			})
-		})
+		return db.table('links').get(this.l)(prop).run(db.conn)
 	}
 
 	static exists (l) {
-		return new Promise((resolve, reject) => {
-			db.table('links')('l').contains(l).run(db.conn).then((res) => {
-				resolve(res)
-			}).catch((err) => {
-				reject(err)
-			})
-		})
+		return db.table('links')('l').contains(l).run(db.conn)
 	}
 
 	static genId () {
