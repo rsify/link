@@ -21,12 +21,34 @@ var vm = new Vue({
 		urlInputValue: ''
 	},
 	methods: {
-		copylOutput: function () {
-			// TODO
+		copylinkOutput: function () {
+			var ca = document.querySelector('.copy-area')
+			ca.value = this.linkOutputValue
+			ca.select()
+
+			try {
+				var s = document.execCommand('copy')
+				console.log('copy', s)
+				if (!s) throw 'copy command failed'
+				this.flashCopySuccessBubble()
+			} catch (e) {
+				console.log(e)
+			}
 		},
 
 		finished: function () {
 			this.currentView = 'finish-view'
+		},
+
+		flashCopySuccessBubble: function () {
+			var el = document.querySelector('.output-copy')
+			if (!el) return
+
+			el.classList.add('animation-flash-copied')
+
+			setTimeout(function () {
+				el.classList.remove('animation-flash-copied')
+			}, 2000)
 		},
 
 		submit: function () {

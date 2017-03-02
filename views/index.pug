@@ -17,7 +17,7 @@ html
 
 		script(type='text/x-template')#app-template
 			transition(name='swap-transition')
-				component(v-bind:is='currentView')
+				component(:is='currentView')
 
 		script(type='text/x-template')#start-template
 			.start-c.comp-c
@@ -38,9 +38,11 @@ html
 
 		script(type='text/x-template')#finish-template
 			.finish-c.comp-c
-				a(v-bind:href='$parent.linkOutputValue').output
+				a(:href='$parent.linkOutputValue').output
 					| {{ $parent.linkOutputValue }}
 				i.fa.fa-clipboard.output-copy(
-					v-on:click='$parent.copylOutput')
+					v-on:click='$parent.copylinkOutput')
+
+		textarea.copy-area
 
 		script(src='link.js')

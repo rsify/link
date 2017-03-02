@@ -110,3 +110,41 @@ a.output {
 	opacity: 0;
 	transform: translateY(-50px);
 }
+
+.copy-area {
+	height: 0;
+	position: fixed;
+	width: 0;
+}
+
+.output-copy {
+	position: relative;
+}
+
+.animation-flash-copied:after {
+	font-family: farsan;
+	font-size: 1.2em;
+	cursor: default;
+	position: absolute;
+	top: -20px;
+	left: -15px;
+	content: 'copied!';
+	opacity: 0;
+	animation: flash-copied cubic-bezier(0, 0.45, 0.4, 0.99) 2s;
+}
+
+@keyframes flash-copied {
+	0% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+
+	30% {
+		opacity: 1;
+	}
+
+	100% {
+		transform: translateY(-30px);
+		opacity: 0;
+	}
+}
