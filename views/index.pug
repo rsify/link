@@ -20,9 +20,16 @@ html
 				component(v-bind:is='currentView')
 
 		script(type='text/x-template')#start-template
-			form.input-c.comp-c#form-input
-				input.paste-input(type='text' placeholder='paste here...')
-				button.paste-submit
+			.start-c.comp-c
+				input.paste-input(
+					type='text'
+					placeholder='paste here...'
+					v-model='$parent.urlInputValue'
+					v-on:keydown.enter='$parent.submit')
+
+				button.paste-submit(
+					v-if='$parent.urlInputValue.length > 0'
+					v-on:click='$parent.submit')
 					i.fa.fa-arrow-right
 
 		script(type='text/x-template')#loading-template
@@ -31,7 +38,9 @@ html
 
 		script(type='text/x-template')#finish-template
 			.finish-c.comp-c
-				a(href='#').output https://link.nikerino.com/aj589g
-				i.fa.fa-clipboard.output-copy
+				a(v-bind:href='$parent.linkOutputValue').output
+					| {{ $parent.linkOutputValue }}
+				i.fa.fa-clipboard.output-copy(
+					v-on:click='$parent.copylOutput')
 
 		script(src='link.js')
