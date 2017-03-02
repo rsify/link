@@ -1,10 +1,12 @@
 const Link = require('../../models/Link')
 
 module.exports = (req, res) => {
-	if (!req.query.l)
+	const l = req.query.l || req.body.l
+
+	if (!l)
 		return res.status(400).json({ err: 'l not specified' })
 
-	Link.exists(req.query.l).then((exists) => {
+	Link.exists(l).then((exists) => {
 		return res.json({
 			err: null,
 			success: true,

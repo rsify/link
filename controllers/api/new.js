@@ -1,14 +1,16 @@
 const Link = require('../../models/Link')
 
 module.exports = (req, res) => {
-	if (!req.query.url)
+	const url = req.query.url || req.body.url
+
+	if (!url)
 		return res.status(400).json({ err: 'url not specified' })
 
 	let id, link
 	Link.genId().then((d) => {
 		id = d
 		link = new Link(id)
-		return link.create(req.query.url)
+		return link.create(url)
 	}).then((r) => {
 		res.json({
 			err: null,

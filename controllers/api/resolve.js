@@ -1,10 +1,12 @@
 const Link = require('../../models/Link')
 
 module.exports = (req, res) => {
-	if (!req.query.l)
+	const l = req.query.l || req.body.l
+
+	if (!l)
 		return res.status(400).json({ err: 'url not specified' })
 
-	const link = new Link(req.query.l)
+	const link = new Link(l)
 
 	link.get('url').then((url) => {
 		return res.json({
