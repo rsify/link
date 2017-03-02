@@ -6,6 +6,12 @@ for (let c of arr) {
 	})
 }
 
+var initialData = {
+		currentView: 'start-view',
+		lOutputValue: '',
+		urlInputValue: ''
+}
+
 var vm = new Vue({
 	el: '#app',
 	template: '#app-template',
@@ -15,11 +21,7 @@ var vm = new Vue({
 			else return window.location.origin + '/' + this.lOutputValue
 		}
 	},
-	data: {
-		currentView: 'start-view',
-		lOutputValue: '',
-		urlInputValue: ''
-	},
+	data: function () { return JSON.parse(JSON.stringify(initialData)) },
 	methods: {
 		copylinkOutput: function () {
 			var ca = document.querySelector('.copy-area')
@@ -49,6 +51,12 @@ var vm = new Vue({
 			setTimeout(function () {
 				el.classList.remove('animation-flash-copied')
 			}, 2000)
+		},
+
+		reset: function () {
+			for (var index in initialData) {
+				this[index] = initialData[index]
+			}
 		},
 
 		submit: function () {

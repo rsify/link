@@ -27,7 +27,7 @@ html
 					v-model='$parent.urlInputValue'
 					v-on:keydown.enter='$parent.submit')
 
-				button.paste-submit(
+				button.stylish-button.submit-button(
 					v-if='$parent.urlInputValue.length > 0'
 					v-on:click='$parent.submit')
 					i.fa.fa-arrow-right
@@ -42,6 +42,9 @@ html
 					| {{ $parent.linkOutputValue }}
 				i.fa.fa-clipboard.output-copy(
 					v-on:click='$parent.copylinkOutput')
+
+				button.stylish-button.reset-button(v-on:click='$parent.reset')
+					i.fa.fa-arrow-left
 
 		textarea.copy-area
 

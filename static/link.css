@@ -47,14 +47,13 @@ body {
 	transform: translateY(-2px);
 }
 
-.paste-submit {
-	background: lightgray;
+.stylish-button {
+	background: #d3d3d3;
 	border-radius: 5px;
 	border: none;
 	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 	display: block;
-	font-size: 1.5em;
 	margin: auto;
 	margin-top: 20px;
 	outline: none;
@@ -63,9 +62,21 @@ body {
 	transition: 0.2s;
 }
 
-.paste-submit:hover {
+.stylish-button:focus {
 	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
 	transform: translateY(2px);
+}
+
+.stylish-button:hover {
+	background: #b5b5b5;
+}
+
+.submit-button {
+	font-size: 1.5em;
+}
+
+.reset-button {
+	font-size: 1em;
 }
 
 .comp-c {
@@ -112,8 +123,13 @@ a.output {
 }
 
 .copy-area {
+	border: none;
+	cursor: default;
 	height: 0;
+	left: 0;
+	outline: none;
 	position: fixed;
+	top: 0;
 	width: 0;
 }
 
@@ -122,15 +138,15 @@ a.output {
 }
 
 .animation-flash-copied:after {
+	animation: flash-copied cubic-bezier(0, 0.45, 0.4, 0.99) 2s;
+	content: 'copied!';
+	cursor: default;
 	font-family: farsan;
 	font-size: 1.2em;
-	cursor: default;
+	left: -15px;
+	opacity: 0;
 	position: absolute;
 	top: -20px;
-	left: -15px;
-	content: 'copied!';
-	opacity: 0;
-	animation: flash-copied cubic-bezier(0, 0.45, 0.4, 0.99) 2s;
 }
 
 @keyframes flash-copied {
