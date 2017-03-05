@@ -50,7 +50,7 @@ var vm = new Vue({
 
 			setTimeout(function () {
 				el.classList.remove('animation-flash-copied')
-			}, 2000)
+			}, 1500)
 		},
 
 		reset: function () {
