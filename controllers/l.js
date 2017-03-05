@@ -10,7 +10,11 @@ module.exports = (req, res) => {
 		const link = new Link(req.params.l)
 
 		link.get('url').then((url) => {
-			res.redirect(url)
+			const re = /^https?:\/\//
+			if (!re.test(url))
+				url = 'http://' + url
+
+			res.redirect(301, url)
 		}).catch((err) => {
 			res.redirect('/')
 		})
