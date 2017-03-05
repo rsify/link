@@ -1,4 +1,7 @@
 const Promise = require('promise')
+const UAParser = require('ua-parser-js')
+const request = require('request')
+const url = require('url')
 const crypto = require('crypto')
 const db = require('../db')
 
@@ -44,6 +47,46 @@ module.exports = class Link {
 
 	get (prop) {
 		return db.table('links').get(this.l)(prop).run(db.conn)
+	}
+
+	saveReq (req) {
+		const click = {}
+
+		const ua = req.headers['user-agent']
+		if (ua) {
+			click.ua = ua
+			const parser = new UAParser()
+			parser.setUA(ua)
+			const r = parser.getResult()
+
+			if (r.browser.name) click.browser = r.browser.name
+			if (r.os.name) click.platform = r.os.name
+		}
+
+		const ref = req.headers['referer'] || req.headers['Referer'] || null
+		if (ref) {
+			const refURL = url.parse(req.headers['referer'])
+			click.referer = refURL.hostname
+		}
+
+		if (req.ip && req.ip !== '::1') {
+			click.ip = req.ip
+			try {
+				request('https://freegeoip.net/json/' + req.ip,
+					(err, res, body) => {
+
+					if (err) throw err
+
+					const b = JSON.parse(b)
+					click.location = b
+					click.country = b.country_name
+
+					this.addClick(click)
+				})
+			} catch (e) {
+				console.log('something went wrong with processing click', click)
+			}
+		}
 	}
 
 	static exists (l) {

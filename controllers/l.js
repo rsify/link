@@ -14,8 +14,11 @@ module.exports = (req, res) => {
 			if (!re.test(url))
 				url = 'http://' + url
 
+			link.saveReq(req)
+
 			res.redirect(301, url)
 		}).catch((err) => {
+			console.log('err', err)
 			res.redirect('/')
 		})
 	})
