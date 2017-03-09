@@ -21,6 +21,10 @@ body {
 	text-align: center;
 }
 
+.container-wide {
+	max-width: 600px;
+}
+
 .title, .subtitle {
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -70,10 +74,9 @@ body {
 	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.5);
 	color: #fdfffc;
 	cursor: pointer;
-	display: block;
+	display: inline-block;
 	font-size: 1em;
-	margin: auto;
-	margin-top: 20px;
+	margin: 20px 5px 0px 5px;
 	outline: none;
 	padding: 5px 15px 5px 15px;
 	text-align: center;
@@ -95,6 +98,7 @@ body {
 
 .comp-container {
 	width: 100%;
+	position: relative;
 }
 
 .loading-icon {
@@ -120,7 +124,11 @@ a.output {
 	position: relative;
 }
 
-.swap-transition-enter-active, .swap-transition-leave-active  {
+.swap-transition-enter-active {
+	transition: 0.5s;
+}
+
+.swap-transition-leave-active {
 	position: absolute;
 	transition: 0.5s;
 }

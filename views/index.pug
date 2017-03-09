@@ -48,8 +48,19 @@ html
 				i.fa.fa-clipboard.output-copy(
 					v-on:click='$parent.copylinkOutput')
 
-				button.stylish-button.reset-button(v-on:click='$parent.reset')
+				button.stylish-button(v-on:click='$parent.reset')
 					i.fa.fa-arrow-left
+
+				button.stylish-button(v-on:click='$parent.stats')
+					i.fa.fa-line-chart
+
+		script(type='text/x-template')#stats-template
+			.comp-container
+				.chart-switcher
+					.chart-button(:id='tab.id' v-for='tab of tabs')
+						| {{ tab }}
+				.tab
+					canvas.chart-canvas
 
 		textarea.copy-area
 

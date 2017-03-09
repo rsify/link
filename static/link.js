@@ -6,10 +6,20 @@ for (let c of arr) {
 	})
 }
 
+Vue.component('stats-view', {
+	template: '#stats-template',
+	data: function () {
+		return {
+			tabs: ['heck', 'planetLUL']
+		}
+	}
+})
+
 var initialData = {
-		currentView: 'start-view',
-		lOutputValue: '',
-		urlInputValue: ''
+	currentView: 'start-view',
+	l: '',
+	showStats: true,
+	urlInputValue: ''
 }
 
 var vm = new Vue({
@@ -17,8 +27,8 @@ var vm = new Vue({
 	template: '#app-template',
 	computed: {
 		linkOutputValue: function () {
-			if (!this.lOutputValue) return ''
-			else return window.location.origin + '/' + this.lOutputValue
+			if (!this.l) return ''
+			else return window.location.origin + '/' + this.l
 		}
 	},
 	data: function () { return JSON.parse(JSON.stringify(initialData)) },
@@ -59,6 +69,19 @@ var vm = new Vue({
 			}
 		},
 
+		stats: function () {
+			if (typeof this.l === 'undefined' && this.l.length === 0) return
+			this.currentView = 'stats-view'
+
+			var xhr = new XMLHttpRequest()
+			xhr.open('GET', '/api/stats?l=' + this.l)
+			xhr.addEventListener('load', function (res) {
+				console.log('req', res.responseText)
+			})
+
+			xhr.send()
+		},
+
 		submit: function () {
 			if (this.urlInputValue.length === 0) return
 			this.currentView = 'loading-view'
@@ -76,8 +99,8 @@ var vm = new Vue({
 					try {
 						var body = JSON.parse(xhr.responseText)
 
-						that.lOutputValue = body.res.l
-						if (!that.lOutputValue) throw 'l not received'
+						that.l = body.res.l
+						if (!that.l) throw 'l not received'
 
 						that.finished()
 					} catch (e) {
