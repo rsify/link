@@ -26,8 +26,8 @@ module.exports = class Link {
 		}
 
 		return db.table('links').get(this.l).update({
-				clicks: db.row('clicks').append(click)
-			}).run(db.conn)
+			clicks: db.row('clicks').append(click)
+		}).run(db.conn)
 	}
 
 	create (url) {
