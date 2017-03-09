@@ -30,6 +30,11 @@ module.exports = class Link {
 		}).run(db.conn)
 	}
 
+	countClickGroup (group) {
+		return db.table('links').get(this.l)('clicks').group(group).count()
+			.run(db.conn)
+	}
+
 	create (url) {
 		const data = {
 			l: this.l,
