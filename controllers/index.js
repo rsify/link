@@ -9,6 +9,7 @@ router.get('/favicon.ico', (req, res) => {
 })
 
 router.use('/api', require('./api'))
+router.get('/:l/stats', require('./stats'))
 router.get('/:l', require('./l'))
 
 module.exports = router

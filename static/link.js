@@ -10,15 +10,73 @@ Vue.component('stats-view', {
 	template: '#stats-template',
 	data: function () {
 		return {
-			tabs: ['heck', 'planetLUL']
+			chart: null,
+			tabs: [
+				{
+					name: 'Country',
+					icon: 'globe'
+				},
+				{
+					name: 'Referer',
+					icon: 'external-link'
+				},
+				{
+					name: 'Browser',
+					icon: 'cloud'
+				},
+				{
+					name: 'Platform',
+					icon: 'laptop'
+				}
+			]
 		}
+	},
+	methods: {
+		tabSelect: function (e) {
+			var type = e.target.dataset.type.toLowerCase()
+			this.updateChart(type)
+		},
+
+		updateChart: function (type) {
+			type = type || 'browser'
+
+			var d = this.$parent.retrievedStats[type]
+
+			this.chart.data.labels = Object.keys(d)
+			this.chart.data.datasets = [{
+				data: Object.values(d),
+				borderWidth: 10
+			}]
+
+			this.chart.update()
+		}
+	},
+	mounted: function () {
+		const labels = []
+
+		Chart.defaults.global.legend.display = false
+		this.chart = new Chart('chart', {
+			type: 'bar',
+			options: {
+				legend: {
+					display: false
+				},
+				scales: {
+					xAxes: [{ display: false }],
+					yAxes: [{
+						stacked: true
+					}]
+				}
+			}
+		})
+
+		setTimeout(this.updateChart, 0)
 	}
 })
 
 var initialData = {
 	currentView: 'start-view',
 	l: '',
-	showStats: true,
 	urlInputValue: ''
 }
 
@@ -48,7 +106,7 @@ var vm = new Vue({
 			}
 		},
 
-		finished: function () {
+		finish: function () {
 			this.currentView = 'finish-view'
 		},
 
@@ -70,13 +128,21 @@ var vm = new Vue({
 		},
 
 		stats: function () {
-			if (typeof this.l === 'undefined' && this.l.length === 0) return
-			this.currentView = 'stats-view'
+			if (typeof this.l === 'undefined' || this.l.length === 0) return
 
 			var xhr = new XMLHttpRequest()
 			xhr.open('GET', '/api/stats?l=' + this.l)
-			xhr.addEventListener('load', function (res) {
-				console.log('req', res.responseText)
+			var self = this
+			xhr.addEventListener('load', function () {
+				try {
+					var body = JSON.parse(this.responseText)
+
+					self.retrievedStats = body.res
+
+					self.currentView = 'stats-view'
+				} catch (e) {
+					console.log('error while getting stats')
+				}
 			})
 
 			xhr.send()
@@ -93,16 +159,16 @@ var vm = new Vue({
 
 			xhr.send('url=' + this.urlInputValue)
 
-			var that = this
+			var self = this
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState === XMLHttpRequest.DONE) {
 					try {
 						var body = JSON.parse(xhr.responseText)
 
-						that.l = body.res.l
-						if (!that.l) throw 'l not received'
+						self.l = body.res.l
+						if (!self.l) throw 'l not received'
 
-						that.finished()
+						self.finish()
 					} catch (e) {
 						console.log(e)
 					}

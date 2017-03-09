@@ -8,6 +8,7 @@ html
 		link(rel='stylesheet'
 			href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
 		script(src='https://unpkg.com/vue@2.2.0/dist/vue.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js')
 	body
 		.container
 			.title link
@@ -56,11 +57,22 @@ html
 
 		script(type='text/x-template')#stats-template
 			.comp-container
-				.chart-switcher
-					.chart-button(:id='tab.id' v-for='tab of tabs')
-						| {{ tab }}
-				.tab
-					canvas.chart-canvas
+				.stats-cols
+					.chart-switcher
+						button.stylish-button.chart-button(
+							v-on:click='$parent.finish')
+							i.fa.fa-arrow-left
+
+						button.stylish-button.chart-button(
+							:id='"tab-" + tab.name + "-button"'
+							v-bind:data-type='tab.name'
+							v-bind:title='tab.name'
+							v-on:click='tabSelect'
+							v-for='tab of tabs')
+							i.fa(:class='"fa-" + tab.icon')
+
+					.chart-canvas
+						canvas#chart
 
 		textarea.copy-area
 
