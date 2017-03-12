@@ -75,10 +75,13 @@ module.exports = class Link {
 			click.referer = refURL.hostname
 		}
 
-		if (req.ip && req.ip !== '::1') {
-			click.ip = req.ip
+		const ip = req.headers['x-forwarded-for']
+			|| req.connection.remoteAddress
+
+		if (ip && ip !== '::1') {
+			click.ip = ip
 			try {
-				request('https://freegeoip.net/json/' + req.ip,
+				request('https://freegeoip.net/json/' + ip,
 					(err, res, body) => {
 
 					if (err) throw err
