@@ -88,10 +88,7 @@ Vue.component('stats-view', {
 			})
 
 			var otherValue = arr.reduce(function (acc, item, index) {
-				if (index >= MAX_BARS) {
-					console.log(index, item, item.value)
-					return acc + item.value
-					}
+				if (index >= MAX_BARS) return acc + item.value
 				else return 0
 			}, 0)
 
