@@ -1,11 +1,18 @@
 const express = require('express')
+const log = require('./util/log')
+
+log.info('app', 'starting...')
 
 if (!require('fs').existsSync('config.json')) {
-	console.log('copy config.example.json to config.json before running app.js')
+	log.fatal('app', `copy ${log.e('config.example.json')} ` +
+		`to ${log.e('config.json')} before running the app`)
+
 	process.exit(1)
 }
 
 const config = require('./config')
+
+log.success('app', `read ${log.e('config.json')}`)
 
 const app = express()
 
@@ -15,5 +22,6 @@ app.use('/', express.static('static'))
 app.use('/', require('./controllers'))
 
 const l = app.listen(config.http.port, () => {
-	console.log(`listening on port ${l.address().port}`)
+	log.success('http', 'server started')
+	log.info('http', `server listening on port ${log.e(l.address().port)}`)
 })

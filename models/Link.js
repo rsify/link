@@ -4,6 +4,7 @@ const request = require('request')
 const url = require('url')
 const crypto = require('crypto')
 const db = require('../db')
+const log = require('../util/log')
 
 module.exports = class Link {
 	constructor (l) {
@@ -89,7 +90,8 @@ module.exports = class Link {
 					this.addClick(click)
 				})
 			} catch (e) {
-				console.log('something went wrong with processing click', click)
+				log.warn('models', 'failed to process a click')
+				log.inspect(click)
 			}
 		}
 	}

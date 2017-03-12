@@ -1,3 +1,4 @@
+const log = require('../util/log')
 const Link = require('../models/Link')
 
 module.exports = (req, res) => {
@@ -18,7 +19,7 @@ module.exports = (req, res) => {
 
 			res.redirect(301, url)
 		}).catch((err) => {
-			console.log('err', err)
+			log.error('routes', `caught error: ${err}`)
 			res.redirect('/')
 		})
 	})
