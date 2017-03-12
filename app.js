@@ -20,6 +20,13 @@ const app = express()
 app.set('view engine', 'pug')
 app.use(compression()) // gzip compress
 
+app.locals.env = process.env
+
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'PRODUCTION')
+	log.info('app', `started in ${log.e('production')} mode`)
+else
+	log.info('app', `started in ${log.e('development')} mode`)
+
 app.use('/', express.static('static'))
 app.use('/', require('./controllers'))
 
