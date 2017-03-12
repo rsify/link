@@ -1,4 +1,10 @@
 const express = require('express')
+
+if (!require('fs').existsSync('config.json')) {
+	console.log('copy config.example.json to config.json before running app.js')
+	process.exit(1)
+}
+
 const config = require('./config')
 
 const app = express()
