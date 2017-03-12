@@ -129,7 +129,7 @@ Vue.component('stats-view', {
 })
 
 var initialData = {
-	currentView: 'start-view',
+	currentView: '',
 	l: '',
 	urlInputValue: ''
 }
@@ -229,7 +229,28 @@ var vm = new Vue({
 			}
 		}
 	},
+	mounted: function () {
+		var re = /\/(.+)\/stats/
+		if (re.test(window.location.pathname)) // is on /:/stats route
+			try {
+				this.l = re.exec(window.location.pathname)[1]
+				this.stats()
+			} catch (e) {
+				console.error('error while retrieving stats')
+				this.currentView = 'start-view'
+			}
+		else this.currentView = 'start-view'
+	},
 	watch: {
+		currentView: function (val, old) {
+			// pseudo router
+			if (val === 'stats-view') {
+				window.history.replaceState({}, document.title, '/' + this.l + '/stats')
+			}
+			else if (old === 'stats-view') {
+				window.history.replaceState({}, document.title, '/')
+			}
+		},
 		urlInputValue: function (val, old) {
 			if (val.length > old.length + 1)
 				this.submit()
