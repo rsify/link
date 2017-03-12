@@ -1,3 +1,4 @@
+const compression = require('compression')
 const express = require('express')
 const log = require('./util/log')
 
@@ -17,6 +18,7 @@ log.success('app', `read ${log.e('config.json')}`)
 const app = express()
 
 app.set('view engine', 'pug')
+app.use(compression()) // gzip compress
 
 app.use('/', express.static('static'))
 app.use('/', require('./controllers'))
