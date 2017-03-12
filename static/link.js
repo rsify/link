@@ -52,6 +52,15 @@ Vue.component('stats-view', {
 
 			var d = this.$parent.retrievedStats[type]
 
+			if (Object.keys(d).length === 0) {
+				var ctx = this.chart.chart.ctx
+				var canvas = this.chart.chart.canvas
+				ctx.font = '48px serif'
+				ctx.textAlign = 'center'
+				ctx.fillText('no data', 0, 0)
+				return
+			}
+
 			var arr = []
 			for (var key in d) {
 				var prop = d[key]
@@ -105,6 +114,23 @@ Vue.component('stats-view', {
 	mounted: function () {
 		const labels = []
 
+		Chart.plugins.register({
+			afterDraw: function (chart) {
+				if (chart.data.datasets.length === 0) {
+					var ctx = chart.chart.ctx;
+					chart.clear()
+
+					ctx.save()
+					ctx.textAlign = 'center'
+					ctx.textBaseline = 'middle'
+					ctx.font = '24px farsan'
+					ctx.fillText('no data',
+						chart.chart.width / 2,
+						chart.chart.height / 2)
+					ctx.restore()
+				}
+			}
+		})
 		Chart.defaults.global.legend.display = false
 		this.chart = new Chart('chart', {
 			type: 'bar',
