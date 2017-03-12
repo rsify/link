@@ -17,7 +17,7 @@ r.connect({ host: config.r.host, port: config.r.port }).then((c) => {
 }).then(() => {
 	return r.db(config.r.db).tableList().contains('links').run(conn).then((res) => {
 		if (!res) {
-			log.ingo('db', 'table \'links\' doesn\'t exist, creating...')
+			log.info('db', 'table \'links\' doesn\'t exist, creating...')
 
 			return r.db(config.r.db).tableCreate('links', {
 				primaryKey: 'l'

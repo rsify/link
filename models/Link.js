@@ -83,7 +83,7 @@ module.exports = class Link {
 
 					if (err) throw err
 
-					const b = JSON.parse(b)
+					const b = JSON.parse(body)
 					click.location = b
 					click.country = b.country_name
 
