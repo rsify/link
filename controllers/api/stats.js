@@ -2,7 +2,7 @@ const Link = require('../../models/Link')
 const Promise = require('promise')
 
 module.exports = (req, res) => {
-	const l = '1mI0HX'
+	const l = req.query.l || req.body.l
 
 	if (!l)
 		return res.status(400).json({ err: 'l not specified' })
