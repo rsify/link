@@ -129,7 +129,7 @@ Vue.component('stats-view', {
 })
 
 var initialData = {
-	currentView: '',
+	currentView: 'loading-view',
 	l: '',
 	urlInputValue: ''
 }
@@ -178,10 +178,13 @@ var vm = new Vue({
 			for (var index in initialData) {
 				this[index] = initialData[index]
 			}
+
+			this.currentView = 'start-view'
 		},
 
 		stats: function () {
 			if (typeof this.l === 'undefined' || this.l.length === 0) return
+			this.currentView = 'loading-view'
 
 			var xhr = new XMLHttpRequest()
 			xhr.open('GET', '/api/stats?l=' + this.l)
