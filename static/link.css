@@ -181,6 +181,10 @@ a.output {
 	width: 0;
 }
 
+.line {
+	width: 20%;
+}
+
 .credits > a {
 	font-size: 1.2em;
 	color: #011627;
