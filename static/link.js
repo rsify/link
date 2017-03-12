@@ -6,6 +6,12 @@ for (let c of arr) {
 	})
 }
 
+var brightnessFromString = function (str, base) {
+	return (str.split('').reduce(function (sum, it) {
+		return sum + it.charCodeAt(0) * 99
+	}, 0) % 500 / 5) % 30
+}
+
 Vue.component('stats-view', {
 	template: '#stats-template',
 	data: function () {
@@ -28,24 +34,69 @@ Vue.component('stats-view', {
 					name: 'Platform',
 					icon: 'laptop'
 				}
-			]
+			],
+			type: 'browser'
 		}
 	},
 	methods: {
 		tabSelect: function (e) {
 			var type = e.target.dataset.type.toLowerCase()
+			if (type === this.type) return
+
+			this.type = type
 			this.updateChart(type)
 		},
 
 		updateChart: function (type) {
-			type = type || 'browser'
+			type = type || this.type
 
 			var d = this.$parent.retrievedStats[type]
 
-			this.chart.data.labels = Object.keys(d)
+			var arr = []
+			for (var key in d) {
+				var prop = d[key]
+
+				arr.push({ key: key, value: prop })
+			}
+
+			arr.sort(function (left, right) {
+				if (left.value > right.value) return -1
+				else if (left.value < right.value) return 1
+				else return 0
+			})
+
+			var MAX_BARS = 4
+			var data = arr.map(function (item) {
+				return item.value
+			}).filter(function (item, index) {
+				return index < MAX_BARS
+			})
+
+			var labels = arr.map(function (item) {
+				return item.key
+			}).filter(function (item, index) {
+				return index < MAX_BARS
+			})
+
+			var otherValue = arr.reduce(function (acc, item, index) {
+				if (index >= MAX_BARS) {
+					console.log(index, item, item.value)
+					return acc + item.value
+					}
+				else return 0
+			}, 0)
+
+			if (otherValue) {
+				labels.push('Other')
+				data.push(otherValue)
+			}
+
+			this.chart.data.labels = labels
 			this.chart.data.datasets = [{
-				data: Object.values(d),
-				borderWidth: 10
+				data: data,
+				backgroundColor: labels.map(function (item) {
+					return `hsla(207, 95%, ${brightnessFromString(item)}%, 1)`
+				})
 			}]
 
 			this.chart.update()
@@ -64,7 +115,10 @@ Vue.component('stats-view', {
 				scales: {
 					xAxes: [{ display: false }],
 					yAxes: [{
-						stacked: true
+						stacked: true,
+						gridLines: {
+							display: false
+						}
 					}]
 				}
 			}
@@ -98,11 +152,10 @@ var vm = new Vue({
 
 			try {
 				var s = document.execCommand('copy')
-				console.log('copy', s)
 				if (!s) throw 'copy command failed'
 				this.flashCopySuccessBubble()
 			} catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 		},
 
@@ -141,7 +194,7 @@ var vm = new Vue({
 
 					self.currentView = 'stats-view'
 				} catch (e) {
-					console.log('error while getting stats')
+					console.error('error while getting stats')
 				}
 			})
 
@@ -170,7 +223,7 @@ var vm = new Vue({
 
 						self.finish()
 					} catch (e) {
-						console.log(e)
+						console.error(e)
 					}
 				}
 			}

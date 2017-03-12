@@ -67,6 +67,7 @@ html
 							:id='"tab-" + tab.name + "-button"'
 							v-bind:data-type='tab.name'
 							v-bind:title='tab.name'
+							v-bind:class='{ sel: tab.name.toLowerCase() === type }'
 							v-on:click='tabSelect'
 							v-for='tab of tabs')
 							i.fa(:class='"fa-" + tab.icon')
