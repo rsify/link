@@ -9,5 +9,6 @@
     "request": "^2.80.0",
     "rethinkdb": "^2.3.3",
     "ua-parser-js": "^0.7.12"
-  }
+  },
+  "license": "MIT"
 }
