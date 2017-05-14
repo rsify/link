@@ -18,6 +18,13 @@ log.success('app', `read ${log.e('config.json')}`)
 const app = express()
 
 app.set('view engine', 'pug')
+
+// pipe the whole config into pug templates
+app.use((req, res, next) => {
+	res.locals.config = config
+	next()
+})
+
 app.use(compression()) // gzip compress
 
 app.locals.env = process.env
